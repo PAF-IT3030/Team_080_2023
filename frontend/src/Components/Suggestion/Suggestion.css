@@ -1,26 +1,31 @@
-.suggestions__container {
+.suggestion_container {
     width: 325px;
     height: 290px;
     margin-top: 25px;
 }
-.suggestions__header {
+
+.suggestion_header {
     font-weight: bold;
-    color: #8e8e8e;
+    color: #8E8E8E;
 }
-.suggestions__body {
+
+.suggestion_body {
     height: 256px;
-    height: 290px;
+    width: 290px;
     margin-top: 10px;
 }
-.suggestions__friends {
+
+.suggestion_friends {
     display: flex;
-    padding: 5px 0px;
+    padding: 5px 0;
 }
-.suggestions__image {
+
+.suggestion_image {
     max-width: 35px;
     max-height: 35px;
 }
-.suggestions__username{
+
+.suggestion_username {
     font-weight: bold;
     margin: 10px;
 }
