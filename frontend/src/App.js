@@ -1,5 +1,5 @@
 import LoginPage from './Components/LoginPage/LoginPage';
-//import Home from './Components/HomePage/Home';
+import Home from './Components/HomePage/Home';
 import './App.css';
 
 function App() {
@@ -7,6 +7,7 @@ function App() {
     <div className="App">
     
           <LoginPage/> 
+          <Home/>
     </div>
   );
 }
