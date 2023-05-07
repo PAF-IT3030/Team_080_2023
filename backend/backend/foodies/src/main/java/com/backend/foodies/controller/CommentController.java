@@ -4,25 +4,40 @@ import com.backend.foodies.model.Comment;
 import com.backend.foodies.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+@CrossOrigin("*")
 @RestController
-@RequestMapping("/api/comment")
+@RequestMapping("/api/comments")
 public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @GetMapping("/all")
-    public List<Comment> getcomments() {return commentService.getComments();}
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCommentById(@PathVariable String id){
+        return commentService.getCommentById(id);
+    }
+    @GetMapping
+    public ResponseEntity<?> getComments(){
+        return commentService.getComments();
+    }
 
-    @PostMapping("/add")
-    public Comment insert(@RequestBody Comment comment)  {return commentService.addComment(comment);}
-
-    @PutMapping("/update/{id}")
-    public Comment update(@PathVariable int id, @RequestBody Comment comment) {return commentService.updateComment(id, comment);}
-
-    @DeleteMapping("/delete/{id}")
-    public Comment delete(@PathVariable int id) { return commentService.deleteComment(id);}
-
+    @GetMapping("/post/{id}")
+    public ResponseEntity<?> getCommentsByPost(@PathVariable String id){
+        return commentService.getCommentsByPost(id);
+    }
+    @PostMapping
+    public ResponseEntity<?> saveComment(@RequestBody Comment comment){
+        return commentService.saveComment(comment);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCommentById(@PathVariable String id, @RequestBody Comment comment){
+        return  commentService.updateCommentById(id,comment);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCommentById(@PathVariable String id){
+        return commentService.deleteCommentById(id);
+    }
 }
+
