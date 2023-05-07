@@ -1,126 +1,85 @@
-import React, { Component } from 'react';
-import "./Post.css";
-import { Avatar } from '@mui/material';
-import postimage from "../../images/post.jpg"; 
-import love from "../../images/love.svg"; 
-import comment from "../../images/comment.svg"; 
-import share from "../../images/share.svg"; 
+import './Post.css'
+import Avatar from "@mui/material/Avatar";
+import postimage from '../../images/post.jpg'
+import love from '../../images/love.svg'
+import comment from '../../images/comment.svg'
+import share from '../../images/share.svg'
+import {useEffect, useState} from "react";
 
 
-class Post extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-            commentList:[]
-         }
-    }
+function Post(props) {
 
-    componentDidMount(){
-        this.getComments();
-    }
+    const [commentList, setCommentList] = useState([])
 
-    getComments=()=>{ //API backend
-        // let data=[
-        //     {
-        //         "username": "ASD",
-        //         "commentId":"1234",
-        //         "timeStamp":"123456",
-        //         "description":"Comment 1"
-        //     },
-        //     {
-        //         "username": "anindya",
-        //         "commentId":"1234",
-        //         "timeStamp":"123456",
-        //         "description":"Comment 2"
-        //     },
-        //     {
-        //         "username": "dasgupta",
-        //         "commentId":"1234",
-        //         "timeStamp":"123456",
-        //         "description":"Comment 3"
-        //     }
-        // ];
+    useEffect(() => {
+        getComment();
+    }, []);
 
-        fetch('http://localhost:8080/comments/'+this.props.id)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({commentList: data});
-        });
-        
-    }
-    
-    submitComments =(event) =>{
-        if(event.key == "Enter") {
-            let comment=event.currentTarget.value;
-            if(comment!= null || comment!=undefined) {
-
-                let payload = {
-                    "commentId": Math.floor(Math.random()*1000000).toString(),
-                    "userId": JSON.parse(localStorage.getItem("users")).uid,
-                    "postId": this.props.id,
-                    "timeStamp": new Date().getTime(),
-                    "comment": comment
+    const getComment = () => {
+        let data =
+            [
+                {
+                    userName: "David Mangala",
+                    commentId: 1234,
+                    timeStamp: 6372,
+                    description: "comment 1"
+                },
+                {
+                    userName: "Sumathi pera",
+                    commentId: 1234,
+                    timeStamp: 6372,
+                    description: "comment 2"
+                },
+                {
+                    userName: "haxan sam",
+                    commentId: 1234,
+                    timeStamp: 6372,
+                    description: "comment 3"
                 }
-    
-                const requestOptions ={
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body : JSON.stringify(payload),
+            ]
+
+        setCommentList(data)
+    }
+    return (
+        <div className="post_container">
+            {/*Header*/}
+            <div className="post_header">
+                <Avatar className="post_image" src={props.profileImage}/>
+                <div className="post_username">{props.userName}</div>
+            </div>
+
+            {/*Image*/}
+            <div>
+                <img src={props.postImage} width='615px'/>
+            </div>
+
+            {/*Analytics*/}
+            <div>
+                <div style={{marginLeft: "5px"}}>
+                    <img src={love} className='post_reactimage'/>
+                    <img src={comment} className='post_reactimage'/>
+                    <img src={share} className='post_reactimage'/>
+                </div>
+                <div style={{fontWeight: "bold", marginLeft: "20px"}}>{props.likes}</div>
+            </div>
+
+            {/*Comment section*/}
+            <div>
+
+                {
+                    commentList.map((item, index) => {
+                            return (
+                                <div className='post_comment' key={index}>{item.userName}: {item.description}</div>
+                            )
+                        }
+                    )
                 }
-    
-                fetch("http://localhost:8080/comments",requestOptions)
-                .then(response => response.json())
-                .then(data => {
-                    this.getComments();
-                })
-                .catch(error =>{
-    
-                })
 
-            }
-        }
-    }
+                <input className='post_commentbox' type="text" placeholder="Add a comment"/>
+            </div>
+        </div>
 
-    render() { 
-        return ( 
-        <div className="post__container">
-            {/* Header */}
-          <div className="post__header">
-                <Avatar className="post__image" src="" />
-                <div className="post__username">{this.props.userName}</div>
-          </div>
-
-          {/* Image */}
-          <div>
-              <img src={this.props.postImage} width="615px" /> 
-          </div>
-
-          {/* Analytics */}
-          <div>
-              <div style={{"marginLeft":"10px"}}>
-                  <img src={love} className="post_reactimage"/>
-                  <img src={comment} className="post_reactimage"/>
-                  <img src={share} className="post_reactimage"/>
-              </div>
-              <div style={{ "fontWeight":"bold","marginLeft":"20px  "}}>
-                  {this.props.likes} likes     
-              </div>
-          </div>
-
-          {/* Comment Section */}
-          <div>
-              {
-                  this.state.commentList.map((item,index)=>(
-                      index < 4 ?
-                        <div className="post_comment">{item.userName}: {item.comment}</div> :<span></span>
-                  ))
-              }
-              <input text="text" onKeyPress={this.submitComments} className="post__commentbox" placeholder="Add a comment..." />
-          </div>
-          
-        </div> 
-        );
-    }
+    )
 }
- 
+
 export default Post;
