@@ -25,7 +25,7 @@ public class NotificationController {
     public ResponseEntity<?> getUnreadNotificationsByUserId(@PathVariable String id){
         return notificationService.getUnreadNotificationsByUserId(id);
     }
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> saveNotification(@RequestBody Notification notification){
         return notificationService.saveNotification(notification);
     }

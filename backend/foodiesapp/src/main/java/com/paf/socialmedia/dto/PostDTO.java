@@ -1,8 +1,6 @@
 package com.paf.socialmedia.dto;
 
-import com.paf.socialmedia.model.Comment;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 import java.util.List;
