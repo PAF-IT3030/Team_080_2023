@@ -13,7 +13,7 @@ public class PostShareController {
     @Autowired
     private PostShareService postShareService;
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> savePost(@RequestBody PostShare postShare){
         return postShareService.savePost(postShare);
     }
