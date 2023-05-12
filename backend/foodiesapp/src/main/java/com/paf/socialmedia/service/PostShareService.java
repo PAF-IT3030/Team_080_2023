@@ -1,9 +1,11 @@
 package com.paf.socialmedia.service;
 
-import com.paf.socialmedia.dto.PostDTO;
+import com.paf.socialmedia.model.Post;
 import com.paf.socialmedia.model.PostShare;
 import com.paf.socialmedia.model.User;
+import com.paf.socialmedia.dto.PostDTO;
 import com.paf.socialmedia.dto.SharedPostDTO;
+import com.paf.socialmedia.repository.PostRepository;
 import com.paf.socialmedia.repository.PostShareRepository;
 import com.paf.socialmedia.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,8 @@ public class PostShareService {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private PostRepository postRepository;
     public ResponseEntity<?> getPostById(String id){
         Optional<PostShare> post =  postShareRepository.findById(id);
         if(post.isPresent()){
@@ -58,20 +61,27 @@ public class PostShareService {
             }
 
             PostDTO postDTO = new PostDTO();
-            postDTO.setId(postshare.getPost().getId());
-            postDTO.setCaption(postshare.getPost().getCaption());
-            postDTO.setImgLink(postshare.getPost().getImgLink());
-            postDTO.setUpdatedAt(postshare.getPost().getUpdatedAt());
-            postDTO.setCreatedAt(postshare.getPost().getCreatedAt());
-            postDTO.setUserId(postshare.getPost().getUserId());
+            Optional<Post> post =  postRepository.findById(postshare.getPost().getId());
+            System.out.println("postshare.getPost().getId()" + postshare.getPost().getId());
+            if(post.isPresent()) {
+                System.out.println("post.isPresent()" + post.get().getId());
+                postDTO.setId(post.get().getId());
+                postDTO.setCaption(post.get().getCaption());
+                postDTO.setImgLink(post.get().getImgLink());
+                postDTO.setUpdatedAt(post.get().getUpdatedAt());
+                postDTO.setCreatedAt(post.get().getCreatedAt());
+                postDTO.setUserId(post.get().getUserId());
 
-            Optional<User> postUser =  userRepository.findById(postshare.getPost().getUserId());
-            if(postUser.isPresent()) {
-                postDTO.setUsername(postUser.get().getUsername());
-                postDTO.setProfileImage(postUser.get().getProfileImage());
+                Optional<User> postUser =  userRepository.findById(post.get().getUserId());
+                if(postUser.isPresent()) {
+                    postDTO.setUsername(postUser.get().getUsername());
+                    postDTO.setProfileImage(postUser.get().getProfileImage());
+                }else{
+                    postDTO.setUsername("Unavailable");
+                }
+                sharedPostDTO.setPost(postDTO);
             }
 
-            sharedPostDTO.setPost(postDTO);
 
             sharedPostDTOList.add(sharedPostDTO);
         }

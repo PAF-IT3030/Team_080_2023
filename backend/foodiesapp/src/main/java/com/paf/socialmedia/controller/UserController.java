@@ -53,15 +53,13 @@ public class UserController {
         }
     }
 
-    @PutMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUserById(@PathVariable String id,@RequestBody User user){
-        Optional<User> existingUser =  userRepository.findById(id);
-        if(existingUser.isPresent()){
-            User updateUser = existingUser.get();
-            updateUser.setDeleted(true);
-            return new ResponseEntity<>(userRepository.save(updateUser), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("Post Update Error",HttpStatus.NOT_FOUND);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUserById(@PathVariable String id){
+        try{
+            userRepository.deleteById(id);
+            return new ResponseEntity<>("Success deleted with " + id,HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
         }
     }
     

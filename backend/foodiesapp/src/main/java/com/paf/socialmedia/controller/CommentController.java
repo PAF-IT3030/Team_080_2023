@@ -26,7 +26,7 @@ public class CommentController {
     public ResponseEntity<?> getCommentsByPost(@PathVariable String id){
         return commentService.getCommentsByPost(id);
     }
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> saveComment(@RequestBody Comment comment){
         return commentService.saveComment(comment);
     }

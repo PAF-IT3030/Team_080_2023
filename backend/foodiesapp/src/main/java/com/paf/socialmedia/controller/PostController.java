@@ -1,21 +1,18 @@
 package com.paf.socialmedia.controller;
 
-import com.paf.socialmedia.dto.PostDTO;
+import com.paf.socialmedia.model.Post;
+import com.paf.socialmedia.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.paf.socialmedia.service.PostService;
-import com.paf.socialmedia.model.Post;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
-
     @Autowired
     private PostService postService;
-
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> savePost(@RequestBody Post post){
         return postService.savePost(post);
     }
